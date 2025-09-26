@@ -7,9 +7,13 @@ import AnalysisScreen from "./components/AnalysisScreen";
 import ResultScreen from "./components/ResultScreen";
 import RegistrationScreen from "./components/RegistrationScreen";
 import HistoryScreen from "./components/HistoryScreen";
+import MessageBanner from "./components/MessageBanner";
+
 
 const GorakshaSavardhanApp = () => {
  const [currentScreen, setCurrentScreen] = useState("login");
+const [message, setMessage] = useState(null);
+const [messageType, setMessageType] = useState("success");
 
   const [user, setUser] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
@@ -74,6 +78,12 @@ const GorakshaSavardhanApp = () => {
         <LoginScreen setCurrentScreen={setCurrentScreen} setUser={setUser} />
       )}
 
+      <MessageBanner
+  message={message}
+  type={messageType}
+  onClose={() => setMessage(null)}
+/>
+
     {currentScreen === "home" && (
   <HomeScreen
     setCurrentScreen={setCurrentScreen}
@@ -90,13 +100,8 @@ const GorakshaSavardhanApp = () => {
         />
       )}
 
-     {currentScreen === "analysis" && (
-  <AnalysisScreen
-    capturedImage={capturedImage}
-    setBreedResult={setBreedResult}
-    setCurrentScreen={setCurrentScreen}
-  />
-)}
+
+
 
       {currentScreen === "results" && (
         <ResultScreen
@@ -107,6 +112,16 @@ const GorakshaSavardhanApp = () => {
           setRegistrations={setRegistrations}
         />
       )}
+
+        {currentScreen === "analysis" && (
+  <AnalysisScreen
+    capturedImage={capturedImage}
+    setBreedResult={setBreedResult}
+    setCurrentScreen={setCurrentScreen}
+    setMessage={setMessage}         
+    setMessageType={setMessageType} 
+  />
+)}
 
       {currentScreen === "registration" && (
         <RegistrationScreen
@@ -125,7 +140,15 @@ const GorakshaSavardhanApp = () => {
       {currentScreen === "settings" && (
         <SettingsScreen setLanguage={setLanguage} language={language} />  
       )}
+
+      <MessageBanner
+  message={message}
+  type={messageType}
+  onClose={() => setMessage(null)}
+/>
     </div>
+
+    
   );
 };
 

@@ -2,7 +2,13 @@ import { useEffect } from "react";
 import { Zap } from "lucide-react";
 import axios from "axios";
 
-const AnalysisScreen = ({ capturedImage, setBreedResult, setCurrentScreen }) => {
+const AnalysisScreen = ({ 
+  capturedImage, 
+  setBreedResult, 
+  setCurrentScreen,
+  setMessage,        // ✅ new
+  setMessageType     // ✅ new
+}) => {
   useEffect(() => {
     if (!capturedImage) return;
 
@@ -11,28 +17,39 @@ const AnalysisScreen = ({ capturedImage, setBreedResult, setCurrentScreen }) => 
         console.log("Sending image to backend...");
 
         const response = await axios.post("http://localhost:5000/analyze", {
-          image: capturedImage, 
+          image: capturedImage,
         });
 
-        console.log("Backend Response:", response.data);
+        console.log("✅ Backend Response:", response.data);
 
         if (response.data?.predictions?.length > 0) {
           const bestPrediction = response.data.predictions[0];
           setBreedResult(bestPrediction);
+
+          // ✅ show success message
+          setMessage("Breed detected successfully!");
+          setMessageType("success");
+
           setCurrentScreen("results");
         } else {
-          alert("No breed detected. Please try another image.");
+          setMessage("No breed detected. Please try another image.");
+          setMessageType("error");
           setCurrentScreen("home");
         }
       } catch (err) {
-        console.error("Error calling backend:", err.message);
-        alert("Error analyzing image. Please check server.");
+        console.error("❌ Error calling backend:", err.message);
+
+        setMessage("Error analyzing image. Please check server.");
+        setMessageType("error");
         setCurrentScreen("home");
       }
     };
 
     analyzeWithBackend();
-  }, [capturedImage, setBreedResult, setCurrentScreen]);
+  }, [capturedImage, setBreedResult, setCurrentScreen, setMessage, setMessageType]);
+
+
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
