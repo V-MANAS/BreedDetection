@@ -16,9 +16,8 @@ const AnalysisScreen = ({
       try {
         console.log("Sending image to backend...");
 
-        const response = await axios.post("http://localhost:5000/analyze", {
-          image: capturedImage,
-        });
+       const response = await axios.post("/api/analyze", { image: capturedImage });
+
 
         console.log("✅ Backend Response:", response.data);
 
