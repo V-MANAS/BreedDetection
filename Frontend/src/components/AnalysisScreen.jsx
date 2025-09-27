@@ -16,10 +16,9 @@ const AnalysisScreen = ({
       try {
         console.log("Sending image to backend...");
 
-     const response = await axios.post(
-  "https://breed-detection-backend.onrender.com/analyze",
-  { image: capturedImage }
-);
+        const response = await axios.post("http://localhost:5000/analyze", {
+          image: capturedImage,
+        });
 
         console.log("✅ Backend Response:", response.data);
 
